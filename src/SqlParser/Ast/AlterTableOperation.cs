@@ -152,6 +152,31 @@ public abstract record AlterTableOperation : IWriteSql
             writer.WriteSql($"DROP CONSTRAINT {ifExists}{Name}{cascade}");
         }
     }
+
+    /// <summary>
+    /// Drop constraint table operation
+    /// <example>
+    /// <c>
+    /// DROP CONSTRAINT [ IF EXISTS ] name
+    /// </c>
+    /// </example>
+    /// </summary>
+    /// <param name="Name">Name identifier</param>
+    /// <param name="IfExists">Contains If Exists</param>
+    /// <param name="Cascade">Cascade</param>
+    public record DropIndex(Ident Name, bool IfExists) : AlterTableOperation
+    {
+        public override void ToSql(SqlTextWriter writer)
+        {
+
+            var ifExists = IfExists ? "IF EXISTS " : null;
+
+
+            writer.WriteSql($"DROP INDEX {ifExists}{Name}");
+        }
+    }
+
+
     /// <summary>
     /// Drop column table operation
     /// <example>

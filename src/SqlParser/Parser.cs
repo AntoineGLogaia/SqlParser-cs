@@ -6153,6 +6153,12 @@ public class Parser
                 var cascade = ParseKeyword(Keyword.CASCADE);
                 operation = new DropConstraint(name, ifExists, cascade);
             }
+            else if (ParseKeyword(Keyword.INDEX))
+            {
+                var ifExists = ParseIfExists();
+                var name = ParseIdentifier();
+                operation = new DropIndex(name, ifExists);
+            }
             else if (ParseKeywordSequence(Keyword.PRIMARY, Keyword.KEY) && _dialect is MySqlDialect or GenericDialect)
             {
                 operation = new DropPrimaryKey();
