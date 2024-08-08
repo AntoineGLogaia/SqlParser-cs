@@ -6163,6 +6163,12 @@ public class Parser
             {
                 operation = new DropPrimaryKey();
             }
+            else if (ParseKeywordSequence(Keyword.FOREIGN, Keyword.KEY) && _dialect is MySqlDialect or GenericDialect)
+            {
+                var ifExists = ParseIfExists();
+                var name = ParseIdentifier();
+                operation = new DropForeignKey(name, ifExists);
+            }
             else
             {
                 ParseKeyword(Keyword.COLUMN);

@@ -154,10 +154,10 @@ public abstract record AlterTableOperation : IWriteSql
     }
 
     /// <summary>
-    /// Drop constraint table operation
+    /// Drop index table operation
     /// <example>
     /// <c>
-    /// DROP CONSTRAINT [ IF EXISTS ] name
+    /// DROP INDEX [ IF EXISTS ] name
     /// </c>
     /// </example>
     /// </summary>
@@ -176,6 +176,28 @@ public abstract record AlterTableOperation : IWriteSql
         }
     }
 
+    /// <summary>
+    /// Drop Foreing Key table operation
+    /// <example>
+    /// <c>
+    /// DROP FOREING KEY [ IF EXISTS ] name
+    /// </c>
+    /// </example>
+    /// </summary>
+    /// <param name="Name">Name identifier</param>
+    /// <param name="IfExists">Contains If Exists</param>
+    /// <param name="Cascade">Cascade</param>
+    public record DropForeignKey(Ident Name, bool IfExists) : AlterTableOperation
+    {
+        public override void ToSql(SqlTextWriter writer)
+        {
+
+            var ifExists = IfExists ? "IF EXISTS " : null;
+
+
+            writer.WriteSql($"DROP FOREIGN KEY {ifExists}{Name}");
+        }
+    }
 
     /// <summary>
     /// Drop column table operation
